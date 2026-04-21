@@ -473,12 +473,12 @@
 <body>
   <div class="container">
     <div class="tabs">
-      <button class="tab-btn active" data-tab="pdfs">Modelos PDF</button>
+      <button class="tab-btn" data-tab="pdfs">Modelos PDF</button>
       <button class="tab-btn" data-tab="teoria">Teoría contratos</button>
-      <button class="tab-btn" data-tab="formulario">Formulario y vista impresión</button>
+      <button class="tab-btn active" data-tab="formulario">Formulario y vista impresión</button>
     </div>
 
-    <div class="tab-panel active" id="tab-pdfs">
+    <div class="tab-panel" id="tab-pdfs">
       <div class="panel">
         <h1>Modelos oficiales de contrato</h1>
         <p class="lead">En esta pestaña puedes abrir los cuatro modelos PDF dentro de la propia página. Sirven como referencia visual para que el alumnado vea el documento real antes de rellenar el formulario.</p>
@@ -505,10 +505,10 @@
 
           <div>
             <div class="pdf-frame">
-              <iframe id="pdfViewer" src="Contrato%20indefinido.pdf#toolbar=1&navpanes=0&view=FitH" title="Visor de PDF"></iframe>
+              <iframe id="pdfViewer" src="" title="Visor de PDF" loading="lazy"></iframe>
             </div>
             <div class="note-box">
-              Esta pestaña muestra los modelos originales. La pestaña de formulario genera una versión rellenada e imprimible inspirada en estos PDFs, con un apartado específico para cláusulas adicionales escrito por el alumnado.
+              Esta pestaña muestra los modelos originales. La pestaña de formulario genera una versión rellenada e imprimible inspirada en estos modelos, con un apartado específico para cláusulas adicionales escrito por el alumnado.
             </div>
           </div>
         </div>
@@ -538,7 +538,7 @@
 
           <div class="info-card" style="background:#eefcf3; border-color:#c8ebd4;">
             <h3>Contrato temporal</h3>
-            <p>El modelo temporal recoge la misma identificación inicial, pero la parte clave es la causa temporal. En el PDF aparecen de forma destacada las cláusulas específicas por circunstancias de la producción y por sustitución de persona trabajadora, además de otras situaciones especiales. Por tanto, el alumnado debe justificar muy bien el motivo de temporalidad.</p>
+            <p>El modelo temporal recoge la misma identificación inicial, pero la parte clave es la causa temporal. En el documento aparecen de forma destacada las cláusulas específicas por circunstancias de la producción y por sustitución de persona trabajadora, además de otras situaciones especiales. Por tanto, el alumnado debe justificar muy bien el motivo de temporalidad.</p>
           </div>
 
           <div class="info-card" style="background:#fff1f3; border-color:#f2c2cb;">
@@ -554,7 +554,7 @@
 
           <div class="info-card" style="background:#eef6ff; border-color:#cfe0ff;">
             <h3>Contrato de formación en alternancia</h3>
-            <p>Este modelo combina actividad laboral retribuida con actividad formativa. En el PDF aparecen cláusulas sobre la actividad laboral, el tutor de la entidad formativa, el tutor de empresa, la formación vinculada, la jornada total, el tiempo de trabajo efectivo y el calendario formativo. Es un contrato especialmente útil para trabajar la idea de alternancia entre empleo y formación.</p>
+            <p>Este modelo combina actividad laboral retribuida con actividad formativa. Aparecen cláusulas sobre la actividad laboral, el tutor de la entidad formativa, el tutor de empresa, la formación vinculada, la jornada total, el tiempo de trabajo efectivo y el calendario formativo. Es un contrato especialmente útil para trabajar la idea de alternancia entre empleo y formación.</p>
           </div>
 
           <div class="info-card" style="background:#eefcf3; border-color:#c8ebd4;">
@@ -569,7 +569,7 @@
 
           <div class="info-card" style="background:#fff8eb; border-color:#f3d59b;">
             <h3>Contrato formativo para la obtención de la práctica profesional</h3>
-            <p>En este modelo se parte de que la persona trabajadora ya tiene la titulación o certificación adecuada. El contrato sirve para obtener práctica profesional acorde con esos estudios. En el PDF se recogen la titulación, la práctica profesional que se va a desarrollar, el grupo profesional, la jornada, la duración, el salario, el convenio y la referencia al plan formativo individual.</p>
+            <p>En este modelo se parte de que la persona trabajadora ya tiene la titulación o certificación adecuada. El contrato sirve para obtener práctica profesional acorde con esos estudios. Se recogen la titulación, la práctica profesional que se va a desarrollar, el grupo profesional, la jornada, la duración, el salario, el convenio y la referencia al plan formativo individual.</p>
           </div>
 
           <div class="info-card" style="background:#fff1f3; border-color:#f2c2cb;">
@@ -584,7 +584,7 @@
 
           <div class="info-card" style="grid-column: 1 / -1; background:#eef6ff; border-color:#cfe0ff;">
             <h3>Campos comunes que se repiten en los cuatro modelos</h3>
-            <p>Los cuatro PDFs repiten un bloque inicial de identificación: datos de la empresa, datos de la cuenta de cotización, datos del centro de trabajo, datos de la persona trabajadora y datos de la asistencia legal en su caso. Después aparecen las cláusulas principales del contrato y, según el modelo, páginas específicas de especialidad. Esto hace posible usar un formulario común y luego adaptar la vista imprimible según el tipo elegido. Los encabezados y la estructura básica se observan en la primera página de cada uno de los cuatro PDFs. fileciteturn1file0 fileciteturn1file1 fileciteturn1file2 fileciteturn1file3</p>
+            <p>Los cuatro modelos repiten un bloque inicial de identificación: datos de la empresa, datos de la cuenta de cotización, datos del centro de trabajo, datos de la persona trabajadora y datos de la asistencia legal en su caso. Después aparecen las cláusulas principales del contrato y, según el modelo, apartados específicos de especialidad. Esto permite usar un formulario común y luego adaptar la vista imprimible según el tipo elegido.</p>
           </div>
 
           <div class="info-card" style="grid-column: 1 / -1; background:#eefcf3; border-color:#c8ebd4;">
@@ -595,7 +595,7 @@
       </div>
     </div>
 
-    <div class="tab-panel" id="tab-formulario">
+    <div class="tab-panel active" id="tab-formulario">
       <div class="panel">
         <h1>Formulario y vista impresión</h1>
         <p class="lead">Rellena los datos del contrato. La parte inferior genera una versión clara para imprimir basada en los modelos oficiales.</p>
@@ -1070,9 +1070,7 @@
       $('conceptosSalariales').value = 'Salario base y plus convenio';
       $('causaTemporal').value = 'No aplica. Contrato vinculado a proceso formativo en alternancia.';
       $('formacionVinculada').value = 'Plan formativo individual de Gestión Administrativa con tutor de empresa y tutor de centro.';
-      $('clausulasAdicionales').value = '1. La persona trabajadora realizará funciones administrativas relacionadas con su itinerario formativo.
-2. La empresa permitirá la asistencia a la formación programada.
-3. El seguimiento se realizará mediante tutorías periódicas.';
+      $('clausulasAdicionales').value = '1. La persona trabajadora realizará funciones administrativas relacionadas con su itinerario formativo.\n2. La empresa permitirá la asistencia a la formación programada.\n3. El seguimiento se realizará mediante tutorías periódicas.';
       renderPreview();
       setPdf('alternancia');
     }
@@ -1087,7 +1085,6 @@
       $('fechaFin').value = '';
       $('fechaNacimiento').value = '';
       renderPreview();
-      setPdf('indefinido');
     }
 
     function getSaved() {
@@ -1178,12 +1175,18 @@
       el.addEventListener('input', renderPreview);
       el.addEventListener('change', () => {
         renderPreview();
-        if (el.id === 'tipoContrato') setPdf(el.value);
+        if (el.id === 'tipoContrato') {
+          document.querySelectorAll('.doc-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.doc === el.value);
+          });
+        }
       });
     });
 
     document.querySelectorAll('.doc-btn').forEach(btn => {
-      btn.addEventListener('click', () => setPdf(btn.dataset.doc));
+      btn.addEventListener('click', () => {
+        setPdf(btn.dataset.doc);
+      });
     });
 
     document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -1192,6 +1195,10 @@
         document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
         btn.classList.add('active');
         document.getElementById(`tab-${btn.dataset.tab}`).classList.add('active');
+
+        if (btn.dataset.tab === 'pdfs' && !$('pdfViewer').src) {
+          setPdf('indefinido');
+        }
       });
     });
 
@@ -1200,7 +1207,6 @@
 
     renderPreview();
     renderSaved();
-    setPdf('indefinido');
   </script>
 </body>
 </html>
