@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contratos de trabajo en España</title>
+  <style>
+    :root {
+      --bg: #f3f6fb;
+      --panel: #ffffff;
+      --line: #d8e2ef;
+      --text: #172033;
+      --muted: #627089;
+      --primary: #1d4ed8;
+      --primary-2: #2563eb;
+      --ok: #166534;
+      --shadow: 0 14px 36px rgba(15, 23, 42, 0.08);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 24px 18px 40px;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      margin-bottom: 20px;
+    }
+
+    h1, h2, h3 { margin-top: 0; }
+
+    h1 {
+      font-size: 1.9rem;
+      margin-bottom: 8px;
+    }
+
+    .lead {
+      color: var(--muted);
+      margin-bottom: 18px;
+      line-height: 1.6;
+    }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .tab-btn {
+      border: 1px solid var(--line);
+      background: #eef4ff;
+      color: var(--primary);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: white;
+      border-color: transparent;
+    }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    .subsection { margin-top: 18px; }
+    .subsection h3 {
+      font-size: 1rem;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .grid-2, .grid-3 {
+      display: grid;
+      gap: 14px;
+    }
+    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    label {
+      font-size: 0.93rem;
+      font-weight: 700;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px 13px;
+      border: 1px solid #c8d6e8;
+      border-radius: 14px;
+      background: white;
+      font: inherit;
+      color: var(--text);
+    }
+
+    textarea {
+      min-height: 92px;
+      resize: vertical;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.10);
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 14px;
+      padding: 12px 16px;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: white;
+      box-shadow: 0 10px 22px rgba(37,99,235,.18);
+    }
+
+    .btn-secondary {
+      background: #e8edf7;
+      color: var(--text);
+    }
+
+    .btn-outline {
+      background: white;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .summary-card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 15px;
+      background: linear-gradient(180deg, #fff, #f9fbff);
+    }
+
+    .summary-card span {
+      display: block;
+      color: var(--muted);
+      font-size: .86rem;
+      margin-bottom: 7px;
+    }
+
+    .summary-card strong {
+      font-size: 1.12rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .ficha {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      overflow: hidden;
+      background: white;
+    }
+
+    .ficha-header {
+      background: #f7faff;
+      border-bottom: 1px solid var(--line);
+      padding: 18px;
+    }
+
+    .ficha-meta {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px 18px;
+      font-size: .95rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+    }
+
+    th, td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f9fbff;
+      color: #334155;
+      font-size: 0.88rem;
+    }
+
+    td.num { text-align: right; }
+
+    .badge-box {
+      padding: 16px 18px;
+      background: #f0fdf4;
+      border-top: 1px solid var(--line);
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--ok);
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .info-card {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px;
+      background: #fafcff;
+    }
+
+    .info-card h3 {
+      margin-bottom: 8px;
+      font-size: 1rem;
+    }
+
+    .info-card p, .info-card li {
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .info-card ul {
+      margin: 8px 0 0 18px;
+      padding: 0;
+    }
+
+    .saved-box {
+      margin-top: 12px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .saved-item {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px;
+      background: #fafcff;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: start;
+      flex-wrap: wrap;
+    }
+
+    .small {
+      color: var(--muted);
+      font-size: .88rem;
+    }
+
+    .print-sheet {
+      display: none;
+    }
+
+    @media (max-width: 860px) {
+      .grid-2, .grid-3, .summary, .ficha-meta, .info-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media print {
+      .tabs,
+      #tab-apuntes,
+      .buttons,
+      .saved-section,
+      .lead,
+      #tab-configurador > .panel:first-child,
+      .summary,
+      .screen-sheet {
+        display: none !important;
+      }
+
+      body { background: white; }
+      .container { max-width: 100%; padding: 0; }
+      .panel {
+        box-shadow: none;
+        border: 0;
+        padding: 0;
+        margin: 0;
+      }
+      .tab-panel { display: block !important; }
+      .print-sheet { display: block !important; }
+      .ficha {
+        border: 1px solid #444;
+        border-radius: 0;
+      }
+      table { font-size: 12px; }
+      th, td {
+        border: 1px solid #555;
+        padding: 6px 8px;
+      }
+      th {
+        background: #c9c9c9 !important;
+        color: #111;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="configurador">Configurador</button>
+      <button class="tab-btn" data-tab="apuntes">Apuntes de clase</button>
+    </div>
+
+    <div class="tab-panel active" id="tab-configurador">
+      <div class="panel">
+        <h1>Contrato de trabajo en España</h1>
+        <p class="lead">Configura una ficha de contrato de trabajo y genera una versión imprimible. Las modalidades incluidas siguen la clasificación mostrada por el SEPE: indefinido, temporal, formación en alternancia, formativo para la obtención de práctica profesional y contrato de pescadores; además, se contemplan anexos y prórrogas frecuentes como pacto de horas complementarias, llamamiento fijo discontinuo y comunicación de prórroga. ([sepe.es](https://www.sepe.es/HomeSepe/es/empresas/Contratos-de-trabajo/modelos-contrato.html))</p>
+
+        <div class="subsection">
+          <h3>Datos básicos</h3>
+          <div class="grid-3">
+            <div class="field">
+              <label for="empresa">Empresa</label>
+              <input id="empresa" value="Empresa Ejemplo S.L.">
+            </div>
+            <div class="field">
+              <label for="trabajador">Trabajador/a</label>
+              <input id="trabajador" value="María López García">
+            </div>
+            <div class="field">
+              <label for="puesto">Puesto de trabajo</label>
+              <input id="puesto" value="Auxiliar administrativa">
+            </div>
+            <div class="field">
+              <label for="tipoContrato">Tipo de contrato</label>
+              <select id="tipoContrato">
+                <option value="indefinido">Indefinido</option>
+                <option value="temporal">Temporal</option>
+                <option value="alternancia">Formación en alternancia</option>
+                <option value="practica">Práctica profesional</option>
+                <option value="pescadores">Pescadores</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="subtipo">Subtipo o causa</label>
+              <select id="subtipo">
+                <option value="general">General</option>
+                <option value="fijo_discontinuo">Fijo discontinuo</option>
+                <option value="circ_produccion">Circunstancias de la producción</option>
+                <option value="sustitucion">Sustitución de persona trabajadora</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="jornada">Jornada</label>
+              <select id="jornada">
+                <option value="completa">Completa</option>
+                <option value="parcial">Parcial</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="fechaInicio">Fecha de inicio</label>
+              <input id="fechaInicio" type="date" value="2026-05-01">
+            </div>
+            <div class="field">
+              <label for="fechaFin">Fecha de fin</label>
+              <input id="fechaFin" type="date">
+            </div>
+            <div class="field">
+              <label for="duracion">Duración</label>
+              <input id="duracion" value="Indefinida">
+            </div>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3>Condiciones principales</h3>
+          <div class="grid-3">
+            <div class="field">
+              <label for="salario">Salario bruto mensual</label>
+              <input id="salario" value="1.450 €">
+            </div>
+            <div class="field">
+              <label for="convenio">Convenio aplicable</label>
+              <input id="convenio" value="Convenio de oficinas y despachos">
+            </div>
+            <div class="field">
+              <label for="periodoPrueba">Periodo de prueba</label>
+              <input id="periodoPrueba" value="2 meses">
+            </div>
+            <div class="field">
+              <label for="horario">Horario</label>
+              <input id="horario" value="De 09:00 a 14:00 y de 15:00 a 18:00">
+            </div>
+            <div class="field">
+              <label for="centroTrabajo">Centro de trabajo</label>
+              <input id="centroTrabajo" value="Madrid">
+            </div>
+            <div class="field">
+              <label for="observaciones">Observaciones</label>
+              <input id="observaciones" value="Contrato para fines didácticos">
+            </div>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3>Opciones habituales del contrato</h3>
+          <div class="grid-3">
+            <div class="field">
+              <label for="opcionEscrito">Formalización</label>
+              <select id="opcionEscrito">
+                <option value="escrito">Por escrito</option>
+                <option value="verbal">Verbal</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="opcionAnexo">Anexo asociado</label>
+              <select id="opcionAnexo">
+                <option value="ninguno">Ninguno</option>
+                <option value="horas_complementarias">Pacto de horas complementarias</option>
+                <option value="llamamiento">Llamamiento fijo discontinuo</option>
+                <option value="prorroga">Comunicación de prórroga</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="incentivos">Incentivos o bonificaciones</label>
+              <select id="incentivos">
+                <option value="no">No</option>
+                <option value="si">Sí</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="buttons">
+          <button class="btn-primary" id="btnGenerar">Generar ficha</button>
+          <button class="btn-secondary" id="btnEjemplo">Cargar ejemplo</button>
+          <button class="btn-outline" id="btnGuardar">Guardar ficha</button>
+          <button class="btn-outline" id="btnLimpiar">Limpiar</button>
+          <button class="btn-outline" id="btnPDF">Imprimir / PDF</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="summary">
+          <div class="summary-card"><span>Tipo</span><strong id="resTipo">Indefinido</strong></div>
+          <div class="summary-card"><span>Jornada</span><strong id="resJornada">Completa</strong></div>
+          <div class="summary-card"><span>Duración</span><strong id="resDuracion">Indefinida</strong></div>
+          <div class="summary-card"><span>Formalización</span><strong id="resForma">Por escrito</strong></div>
+        </div>
+
+        <div class="ficha" id="zonaImpresion">
+          <div class="screen-sheet">
+            <div class="ficha-header">
+              <div style="font-size:1.12rem;font-weight:800;margin-bottom:10px;">Ficha resumen del contrato</div>
+              <div class="ficha-meta">
+                <div><strong>Empresa:</strong> <span id="outEmpresa">-</span></div>
+                <div><strong>Trabajador/a:</strong> <span id="outTrabajador">-</span></div>
+                <div><strong>Puesto:</strong> <span id="outPuesto">-</span></div>
+                <div><strong>Tipo:</strong> <span id="outTipo">-</span></div>
+                <div><strong>Subtipo / causa:</strong> <span id="outSubtipo">-</span></div>
+                <div><strong>Jornada:</strong> <span id="outJornada">-</span></div>
+                <div><strong>Inicio:</strong> <span id="outInicio">-</span></div>
+                <div><strong>Fin:</strong> <span id="outFin">-</span></div>
+              </div>
+            </div>
+
+            <table>
+              <thead>
+                <tr><th>CONCEPTO</th><th>DETALLE</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Duración</td><td id="outDuracion">-</td></tr>
+                <tr><td>Salario</td><td id="outSalario">-</td></tr>
+                <tr><td>Convenio</td><td id="outConvenio">-</td></tr>
+                <tr><td>Periodo de prueba</td><td id="outPrueba">-</td></tr>
+                <tr><td>Horario</td><td id="outHorario">-</td></tr>
+                <tr><td>Centro de trabajo</td><td id="outCentro">-</td></tr>
+                <tr><td>Formalización</td><td id="outForma">-</td></tr>
+                <tr><td>Anexo asociado</td><td id="outAnexo">-</td></tr>
+                <tr><td>Incentivos</td><td id="outIncentivos">-</td></tr>
+                <tr><td>Observaciones</td><td id="outObs">-</td></tr>
+              </tbody>
+            </table>
+
+            <div class="badge-box">Modalidad seleccionada: <span id="outModalidadDestacada">-</span></div>
+          </div>
+
+          <div class="print-sheet" style="display:none; padding:12px; background:white;">
+            <table>
+              <tr>
+                <td colspan="2"><strong>EMPRESA:</strong> <span id="printEmpresa">-</span></td>
+                <td><strong>TRABAJADOR/A:</strong> <span id="printTrabajador">-</span></td>
+                <td><strong>PUESTO:</strong> <span id="printPuesto">-</span></td>
+              </tr>
+            </table>
+
+            <table>
+              <tr>
+                <th>TIPO DE CONTRATO</th>
+                <th>SUBTIPO / CAUSA</th>
+                <th>JORNADA</th>
+                <th>DURACIÓN</th>
+              </tr>
+              <tr>
+                <td id="printTipo">-</td>
+                <td id="printSubtipo">-</td>
+                <td id="printJornada">-</td>
+                <td id="printDuracion">-</td>
+              </tr>
+            </table>
+
+            <table>
+              <tr>
+                <th>OPCIONES HABITUALES</th>
+                <th>SELECCIÓN</th>
+              </tr>
+              <tr><td>Formalización</td><td id="printForma">-</td></tr>
+              <tr><td>Anexo asociado</td><td id="printAnexo">-</td></tr>
+              <tr><td>Incentivos o bonificaciones</td><td id="printIncentivos">-</td></tr>
+              <tr><td>Fecha de inicio</td><td id="printInicio">-</td></tr>
+              <tr><td>Fecha de fin</td><td id="printFin">-</td></tr>
+              <tr><td>Periodo de prueba</td><td id="printPrueba">-</td></tr>
+              <tr><td>Horario</td><td id="printHorario">-</td></tr>
+              <tr><td>Centro de trabajo</td><td id="printCentro">-</td></tr>
+            </table>
+
+            <table>
+              <tr>
+                <th>CONDICIONES ECONÓMICAS Y NORMATIVAS</th>
+                <th>DETALLE</th>
+              </tr>
+              <tr><td>Salario bruto mensual</td><td id="printSalario">-</td></tr>
+              <tr><td>Convenio aplicable</td><td id="printConvenio">-</td></tr>
+              <tr><td>Observaciones</td><td id="printObs">-</td></tr>
+            </table>
+
+            <table>
+              <tr>
+                <th>LISTADO ORIENTATIVO DE MODALIDADES</th>
+                <th>MARCAR</th>
+              </tr>
+              <tr><td>Contrato indefinido</td><td id="chkIndefinido">□</td></tr>
+              <tr><td>Contrato temporal por circunstancias de la producción</td><td id="chkTemporalProd">□</td></tr>
+              <tr><td>Contrato temporal por sustitución de persona trabajadora</td><td id="chkTemporalSust">□</td></tr>
+              <tr><td>Contrato de formación en alternancia</td><td id="chkAlternancia">□</td></tr>
+              <tr><td>Contrato formativo para la obtención de la práctica profesional</td><td id="chkPractica">□</td></tr>
+              <tr><td>Contrato de trabajo de los pescadores</td><td id="chkPescadores">□</td></tr>
+              <tr><td>Pacto de horas complementarias</td><td id="chkHorasComp">□</td></tr>
+              <tr><td>Llamamiento fijo discontinuo</td><td id="chkLlamamiento">□</td></tr>
+              <tr><td>Comunicación de prórroga</td><td id="chkProrroga">□</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel saved-section">
+        <h2>Fichas guardadas</h2>
+        <p class="small">Se guardan en este navegador para que el alumno pueda recuperar su trabajo.</p>
+        <div class="buttons" style="margin-top:0; margin-bottom:12px;">
+          <button class="btn-secondary" id="btnRefreshSaved">Actualizar lista</button>
+          <button class="btn-outline" id="btnDeleteAllSaved">Borrar todas</button>
+        </div>
+        <div class="saved-box" id="savedList">
+          <div class="small">No hay fichas guardadas todavía.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tab-apuntes">
+      <div class="panel">
+        <h1>Apuntes de clase: contrato de trabajo</h1>
+        <p class="lead">Este bloque está pensado para estudiar qué es un contrato de trabajo, qué tipos principales existen y cómo distinguirlos en ejercicios. Las modalidades aquí explicadas siguen la clasificación que ofrece el SEPE en su apartado de modelos de contratos. ([sepe.es](https://www.sepe.es/HomeSepe/es/empresas/Contratos-de-trabajo/modelos-contrato.html))</p>
+
+        <div class="info-grid">
+          <div class="info-card" style="background:#eef6ff; border-color:#cfe0ff;">
+            <h3>Qué es un contrato de trabajo</h3>
+            <p>El contrato de trabajo es el acuerdo entre empresa y trabajador por el que una persona presta servicios de forma voluntaria, retribuida, por cuenta ajena y dentro de la organización de la empresa. Su función es fijar la relación laboral y sus condiciones básicas.</p>
+          </div>
+
+          <div class="info-card" style="background:#eefcf3; border-color:#c8ebd4;">
+            <h3>Elementos básicos</h3>
+            <p>En un contrato deben identificarse las partes, el tipo de contrato, la jornada, la duración, el puesto, el salario, el centro de trabajo y otras condiciones esenciales como el periodo de prueba o el convenio aplicable.</p>
+          </div>
+
+          <div class="info-card" style="background:#fff8eb; border-color:#f3d59b;">
+            <h3>Contrato indefinido</h3>
+            <p>Según el SEPE, el contrato indefinido se concierta sin establecer límites de tiempo en la prestación de servicios. Puede celebrarse verbalmente o por escrito y puede ser a jornada completa, parcial o fijo discontinuo. En algunos casos puede beneficiarse de incentivos a la contratación. ([sepe.es](https://www.sepe.es/HomeSepe/es/empresas/Contratos-de-trabajo/modelos-contrato.html))</p>
+          </div>
+
+          <div class="info-card" style="background:#fff8eb; border-color:#f3d59b;">
+            <h3>Contrato temporal</h3>
+            <p>Según el SEPE, el contrato de duración determinada solo puede celebrarse por circunstancias de la producción o por sustitución de persona trabajadora. Puede ser a jornada completa o parcial, y con carácter general se formaliza por escrito, aunque puede ser verbal en casos muy concretos de corta duración y jornada completa. ([sepe.es](https://www.sepe.es/HomeSepe/es/empresas/Contratos-de-trabajo/modelos-contrato.html))</p>
+          </div>
+
+          <div class="info-card" style="background:#eef6ff; border-color:#cfe0ff;">
+            <h3>Circunstancias de la producción</h3>
+            <p>Es una de las causas del contrato temporal. Se utiliza cuando existe una necesidad productiva ocasional o un incremento temporal de la actividad. En ejercicios conviene fijarse en la causa concreta porque debe estar bien justificada.</p>
+          </div>
+
+          <div class="info-card" style="background:#eef6ff; border-color:#cfe0ff;">
+            <h3>Sustitución de persona trabajadora</h3>
+            <p>Es la otra gran causa del contrato temporal. Se utiliza cuando la empresa necesita sustituir a una persona con reserva de puesto o cubrir temporalmente una vacante en los términos permitidos. En clase suele aparecer cuando alguien está de baja, en excedencia o en suspensión del contrato.</p>
+          </div>
+
+          <div class="info-card" style="background:#eefcf3; border-color:#c8ebd4;">
+            <h3>Contrato de formación en alternancia</h3>
+            <p>El SEPE indica que este contrato tiene por objeto compatibilizar la actividad laboral retribuida con procesos formativos vinculados a formación profesional, estudios universitarios o especialidades formativas del Sistema Nacional de Empleo. La idea clave es que trabajo y formación van unidos. ([sepe.es](https://www.sepe.es/HomeSepe/es/empresas/Contratos-de-trabajo/modelos-contrato.html))</p>
+          </div>
+
+          <div class="info-card" style="background:#eefcf3; border-color:#c8ebd4;">
+            <h3>Contrato formativo para la obtención de la práctica profesional</h3>
+            <p>El SEPE explica que el puesto debe permitir obtener práctica profesional adecuada al nivel de estudios o formación. La empresa debe elaborar un plan formativo individual y asignar tutor o tutora con preparación o experiencia adecuadas. La idea principal es que se trabaja para adquirir práctica profesional relacionada con la titulación. ([sepe.es](https://www.sepe.es/HomeSepe/es/empresas/Contratos-de-trabajo/modelos-contrato.html))</p>
+          </div>
+
+          <div class="info-card" style="background:#fff1f3; border-color:#f2c2cb;">
+            <h3>Contrato de trabajo de los pescadores</h3>
+            <p>El SEPE recoge un modelo específico para pescadores, orientado a mejorar condiciones de trabajo en este sector. Puede acogerse a cualquiera de las modalidades vigentes compatibles con la actividad, pero el modelo se adapta a las particularidades del trabajo pesquero. ([sepe.es](https://www.sepe.es/HomeSepe/es/empresas/Contratos-de-trabajo/modelos-contrato.html))</p>
+          </div>
+
+          <div class="info-card" style="background:#fff1f3; border-color:#f2c2cb;">
+            <h3>Anexos y prórrogas</h3>
+            <p>El SEPE incluye también documentación relacionada, como el pacto de horas complementarias, el llamamiento de fijos discontinuos y la comunicación de la prórroga del contrato. Esto es útil para que el alumnado vea que no todo se reduce al contrato inicial: también existen documentos complementarios. ([sepe.es](https://www.sepe.es/HomeSepe/es/empresas/Contratos-de-trabajo/modelos-contrato.html))</p>
+          </div>
+
+          <div class="info-card" style="background:#eef6ff; border-color:#cfe0ff;">
+            <h3>Jornada completa y parcial</h3>
+            <p>La jornada completa implica trabajar el tiempo ordinario máximo pactado o previsto; la parcial supone una duración inferior. En muchos contratos del SEPE puede utilizarse una u otra, y diferenciar ambas es básico para entender condiciones laborales y retribución.</p>
+          </div>
+
+          <div class="info-card" style="background:#eef6ff; border-color:#cfe0ff;">
+            <h3>Contrato verbal o escrito</h3>
+            <p>No todos los contratos tienen la misma forma. El SEPE señala que el indefinido puede ser verbal o escrito, mientras que el temporal se formaliza por escrito salvo en supuestos concretos de muy corta duración a jornada completa. Saber esto ayuda a interpretar enunciados de examen. ([sepe.es](https://www.sepe.es/HomeSepe/es/empresas/Contratos-de-trabajo/modelos-contrato.html))</p>
+          </div>
+
+          <div class="info-card" style="grid-column: 1 / -1; background:#eef6ff; border-color:#cfe0ff;">
+            <h3>Resumen útil para clasificar contratos</h3>
+            <ul>
+              <li>Si no hay límite temporal, piensa primero en contrato indefinido.</li>
+              <li>Si hay una necesidad temporal, revisa si la causa es producción o sustitución.</li>
+              <li>Si el contrato combina trabajo y formación reglada o especialidades formativas, piensa en formación en alternancia.</li>
+              <li>Si la finalidad es adquirir experiencia adecuada a estudios ya realizados, piensa en práctica profesional.</li>
+              <li>Si el caso se refiere al sector pesquero, revisa el modelo específico de pescadores.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const STORAGE_KEY = 'contratos_guardados_v1';
+
+    const contractLabels = {
+      indefinido: 'Contrato indefinido',
+      temporal: 'Contrato temporal',
+      alternancia: 'Contrato de formación en alternancia',
+      practica: 'Contrato formativo para la obtención de la práctica profesional',
+      pescadores: 'Contrato de trabajo de los pescadores'
+    };
+
+    const subtypeLabels = {
+      general: 'General',
+      fijo_discontinuo: 'Fijo discontinuo',
+      circ_produccion: 'Circunstancias de la producción',
+      sustitucion: 'Sustitución de persona trabajadora'
+    };
+
+    const jornadaLabels = {
+      completa: 'Completa',
+      parcial: 'Parcial'
+    };
+
+    const formaLabels = {
+      escrito: 'Por escrito',
+      verbal: 'Verbal'
+    };
+
+    const anexoLabels = {
+      ninguno: 'Ninguno',
+      horas_complementarias: 'Pacto de horas complementarias',
+      llamamiento: 'Llamamiento fijo discontinuo',
+      prorroga: 'Comunicación de prórroga'
+    };
+
+    const incentivoLabels = {
+      no: 'No',
+      si: 'Sí'
+    };
+
+    function readForm() {
+      return {
+        empresa: $('empresa').value.trim(),
+        trabajador: $('trabajador').value.trim(),
+        puesto: $('puesto').value.trim(),
+        tipoContrato: $('tipoContrato').value,
+        subtipo: $('subtipo').value,
+        jornada: $('jornada').value,
+        fechaInicio: $('fechaInicio').value,
+        fechaFin: $('fechaFin').value,
+        duracion: $('duracion').value.trim(),
+        salario: $('salario').value.trim(),
+        convenio: $('convenio').value.trim(),
+        periodoPrueba: $('periodoPrueba').value.trim(),
+        horario: $('horario').value.trim(),
+        centroTrabajo: $('centroTrabajo').value.trim(),
+        observaciones: $('observaciones').value.trim(),
+        opcionEscrito: $('opcionEscrito').value,
+        opcionAnexo: $('opcionAnexo').value,
+        incentivos: $('incentivos').value
+      };
+    }
+
+    function formatDate(value) {
+      if (!value) return 'No consta';
+      const [y, m, d] = value.split('-');
+      if (!y || !m || !d) return value;
+      return `${d}/${m}/${y}`;
+    }
+
+    function renderContract() {
+      const data = readForm();
+
+      const tipo = contractLabels[data.tipoContrato] || data.tipoContrato;
+      const subtipo = subtypeLabels[data.subtipo] || data.subtipo;
+      const jornada = jornadaLabels[data.jornada] || data.jornada;
+      const forma = formaLabels[data.opcionEscrito] || data.opcionEscrito;
+      const anexo = anexoLabels[data.opcionAnexo] || data.opcionAnexo;
+      const incentivos = incentivoLabels[data.incentivos] || data.incentivos;
+
+      $('resTipo').textContent = tipo;
+      $('resJornada').textContent = jornada;
+      $('resDuracion').textContent = data.duracion || 'No indicada';
+      $('resForma').textContent = forma;
+
+      $('outEmpresa').textContent = data.empresa || '-';
+      $('outTrabajador').textContent = data.trabajador || '-';
+      $('outPuesto').textContent = data.puesto || '-';
+      $('outTipo').textContent = tipo;
+      $('outSubtipo').textContent = subtipo;
+      $('outJornada').textContent = jornada;
+      $('outInicio').textContent = formatDate(data.fechaInicio);
+      $('outFin').textContent = formatDate(data.fechaFin);
+      $('outDuracion').textContent = data.duracion || '-';
+      $('outSalario').textContent = data.salario || '-';
+      $('outConvenio').textContent = data.convenio || '-';
+      $('outPrueba').textContent = data.periodoPrueba || '-';
+      $('outHorario').textContent = data.horario || '-';
+      $('outCentro').textContent = data.centroTrabajo || '-';
+      $('outForma').textContent = forma;
+      $('outAnexo').textContent = anexo;
+      $('outIncentivos').textContent = incentivos;
+      $('outObs').textContent = data.observaciones || '-';
+      $('outModalidadDestacada').textContent = tipo;
+
+      $('printEmpresa').textContent = data.empresa || '-';
+      $('printTrabajador').textContent = data.trabajador || '-';
+      $('printPuesto').textContent = data.puesto || '-';
+      $('printTipo').textContent = tipo;
+      $('printSubtipo').textContent = subtipo;
+      $('printJornada').textContent = jornada;
+      $('printDuracion').textContent = data.duracion || '-';
+      $('printForma').textContent = forma;
+      $('printAnexo').textContent = anexo;
+      $('printIncentivos').textContent = incentivos;
+      $('printInicio').textContent = formatDate(data.fechaInicio);
+      $('printFin').textContent = formatDate(data.fechaFin);
+      $('printPrueba').textContent = data.periodoPrueba || '-';
+      $('printHorario').textContent = data.horario || '-';
+      $('printCentro').textContent = data.centroTrabajo || '-';
+      $('printSalario').textContent = data.salario || '-';
+      $('printConvenio').textContent = data.convenio || '-';
+      $('printObs').textContent = data.observaciones || '-';
+
+      $('chkIndefinido').textContent = data.tipoContrato === 'indefinido' ? '☑' : '□';
+      $('chkTemporalProd').textContent = data.tipoContrato === 'temporal' && data.subtipo === 'circ_produccion' ? '☑' : '□';
+      $('chkTemporalSust').textContent = data.tipoContrato === 'temporal' && data.subtipo === 'sustitucion' ? '☑' : '□';
+      $('chkAlternancia').textContent = data.tipoContrato === 'alternancia' ? '☑' : '□';
+      $('chkPractica').textContent = data.tipoContrato === 'practica' ? '☑' : '□';
+      $('chkPescadores').textContent = data.tipoContrato === 'pescadores' ? '☑' : '□';
+      $('chkHorasComp').textContent = data.opcionAnexo === 'horas_complementarias' ? '☑' : '□';
+      $('chkLlamamiento').textContent = data.opcionAnexo === 'llamamiento' ? '☑' : '□';
+      $('chkProrroga').textContent = data.opcionAnexo === 'prorroga' ? '☑' : '□';
+
+      return data;
+    }
+
+    function loadExample() {
+      $('empresa').value = 'Gestión Comercial Norte S.L.';
+      $('trabajador').value = 'Ana Ruiz Martínez';
+      $('puesto').value = 'Administrativa';
+      $('tipoContrato').value = 'indefinido';
+      $('subtipo').value = 'general';
+      $('jornada').value = 'completa';
+      $('fechaInicio').value = '2026-05-01';
+      $('fechaFin').value = '';
+      $('duracion').value = 'Indefinida';
+      $('salario').value = '1.450 €';
+      $('convenio').value = 'Convenio de oficinas y despachos';
+      $('periodoPrueba').value = '2 meses';
+      $('horario').value = 'De 09:00 a 14:00 y de 15:00 a 18:00';
+      $('centroTrabajo').value = 'Madrid';
+      $('observaciones').value = 'Ejemplo de contrato indefinido a jornada completa';
+      $('opcionEscrito').value = 'escrito';
+      $('opcionAnexo').value = 'ninguno';
+      $('incentivos').value = 'no';
+      renderContract();
+    }
+
+    function clearForm() {
+      ['empresa','trabajador','puesto','duracion','salario','convenio','periodoPrueba','horario','centroTrabajo','observaciones'].forEach(id => $(id).value = '');
+      $('tipoContrato').value = 'indefinido';
+      $('subtipo').value = 'general';
+      $('jornada').value = 'completa';
+      $('fechaInicio').value = '';
+      $('fechaFin').value = '';
+      $('opcionEscrito').value = 'escrito';
+      $('opcionAnexo').value = 'ninguno';
+      $('incentivos').value = 'no';
+      renderContract();
+    }
+
+    function getSaved() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveCurrent() {
+      const data = renderContract();
+      const list = getSaved();
+      list.unshift({
+        id: Date.now(),
+        createdAt: new Date().toLocaleString('es-ES'),
+        empresa: data.empresa,
+        trabajador: data.trabajador,
+        tipo: contractLabels[data.tipoContrato] || data.tipoContrato,
+        data
+      });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(list.slice(0, 20)));
+      renderSaved();
+      alert('Ficha guardada en este navegador.');
+    }
+
+    function loadSaved(id) {
+      const found = getSaved().find(item => item.id === id);
+      if (!found) return;
+      Object.entries(found.data).forEach(([key, value]) => {
+        const el = $(key);
+        if (el) el.value = value;
+      });
+      renderContract();
+    }
+
+    function deleteSaved(id) {
+      const filtered = getSaved().filter(item => item.id !== id);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
+      renderSaved();
+    }
+
+    function deleteAllSaved() {
+      localStorage.removeItem(STORAGE_KEY);
+      renderSaved();
+    }
+
+    function escapeHtml(text) {
+      return String(text)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    function renderSaved() {
+      const list = getSaved();
+      const box = $('savedList');
+      if (!list.length) {
+        box.innerHTML = '<div class="small">No hay fichas guardadas todavía.</div>';
+        return;
+      }
+      box.innerHTML = list.map(item => `
+        <div class="saved-item">
+          <div>
+            <strong>${escapeHtml(item.trabajador || 'Sin nombre')}</strong><br>
+            <span class="small">${escapeHtml(item.empresa || 'Sin empresa')} · ${escapeHtml(item.tipo)} · Guardada el ${escapeHtml(item.createdAt)}</span>
+          </div>
+          <div class="buttons" style="margin-top:0;">
+            <button class="btn-outline" onclick="loadSaved(${item.id})">Cargar</button>
+            <button class="btn-outline" onclick="deleteSaved(${item.id})">Borrar</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    $('btnGenerar').addEventListener('click', renderContract);
+    $('btnEjemplo').addEventListener('click', loadExample);
+    $('btnGuardar').addEventListener('click', saveCurrent);
+    $('btnLimpiar').addEventListener('click', clearForm);
+    $('btnPDF').addEventListener('click', () => window.print());
+    $('btnRefreshSaved').addEventListener('click', renderSaved);
+    $('btnDeleteAllSaved').addEventListener('click', deleteAllSaved);
+
+    document.querySelectorAll('input, select, textarea').forEach(el => {
+      el.addEventListener('input', renderContract);
+      el.addEventListener('change', renderContract);
+    });
+
+    window.loadSaved = loadSaved;
+    window.deleteSaved = deleteSaved;
+
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(`tab-${btn.dataset.tab}`).classList.add('active');
+      });
+    });
+
+    renderContract();
+    renderSaved();
+  </script>
+</body>
+</html>
