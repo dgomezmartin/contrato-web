@@ -1,251 +1,1213 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contratos de trabajo</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contratos de trabajo en España</title>
+  <style>
+    :root {
+      --bg: #f3f6fb;
+      --panel: #ffffff;
+      --line: #d8e2ef;
+      --text: #172033;
+      --muted: #627089;
+      --primary: #1d4ed8;
+      --primary-2: #2563eb;
+      --ok: #166534;
+      --warn: #92400e;
+      --shadow: 0 14px 36px rgba(15, 23, 42, 0.08);
+      --radius: 22px;
+      --paper: #f7f7f5;
+      --paper-line: #c8cfdb;
+      --paper-fill: #eef1f8;
+    }
 
-<script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+    * { box-sizing: border-box; }
 
-<style>
-body { font-family: Arial; background:#f3f6fb; margin:0; }
-.container { max-width:1100px; margin:auto; padding:20px; }
-.panel { background:white; padding:20px; border-radius:12px; margin-bottom:15px; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
 
-.tabs { display:flex; gap:10px; margin-bottom:15px; }
-.tab-btn { padding:10px 15px; border-radius:20px; border:1px solid #ccc; cursor:pointer; }
-.tab-btn.active { background:#2563eb; color:white; }
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 24px 18px 40px;
+    }
 
-.tab-panel { display:none; }
-.tab-panel.active { display:block; }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      margin-bottom: 20px;
+    }
 
-input, select, textarea {
-  width:100%;
-  padding:8px;
-  margin-top:5px;
-  margin-bottom:10px;
-}
+    h1, h2, h3 { margin-top: 0; }
 
-button { padding:10px; margin:5px; cursor:pointer; }
+    h1 {
+      font-size: 1.9rem;
+      margin-bottom: 8px;
+    }
 
-iframe { width:100%; height:700px; border:0; }
+    .lead {
+      color: var(--muted);
+      margin-bottom: 18px;
+      line-height: 1.6;
+    }
 
-h2 { margin-top:0; }
-</style>
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .tab-btn {
+      border: 1px solid var(--line);
+      background: #eef4ff;
+      color: var(--primary);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: white;
+      border-color: transparent;
+    }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    .subsection { margin-top: 18px; }
+    .subsection h3 {
+      font-size: 1rem;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .grid-2, .grid-3, .grid-4 {
+      display: grid;
+      gap: 14px;
+    }
+    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    label {
+      font-size: 0.93rem;
+      font-weight: 700;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px 13px;
+      border: 1px solid #c8d6e8;
+      border-radius: 14px;
+      background: white;
+      font: inherit;
+      color: var(--text);
+    }
+
+    textarea {
+      min-height: 96px;
+      resize: vertical;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.10);
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 14px;
+      padding: 12px 16px;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: white;
+      box-shadow: 0 10px 22px rgba(37,99,235,.18);
+    }
+
+    .btn-secondary {
+      background: #e8edf7;
+      color: var(--text);
+    }
+
+    .btn-outline {
+      background: white;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .summary-card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 15px;
+      background: linear-gradient(180deg, #fff, #f9fbff);
+    }
+
+    .summary-card span {
+      display: block;
+      color: var(--muted);
+      font-size: .86rem;
+      margin-bottom: 7px;
+    }
+
+    .summary-card strong {
+      font-size: 1.05rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .viewer-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 18px;
+    }
+
+    .viewer-menu {
+      display: grid;
+      gap: 10px;
+      align-content: start;
+    }
+
+    .doc-btn {
+      width: 100%;
+      text-align: left;
+      padding: 14px 15px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: #f9fbff;
+      color: var(--text);
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .doc-btn.active {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.10);
+      background: #eef4ff;
+      color: var(--primary);
+    }
+
+    .doc-meta {
+      font-size: .88rem;
+      color: var(--muted);
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    .pdf-frame {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      overflow: hidden;
+      background: white;
+      min-height: 820px;
+    }
+
+    .pdf-frame iframe {
+      width: 100%;
+      height: 820px;
+      border: 0;
+      display: block;
+      background: white;
+    }
+
+    .note-box {
+      margin-top: 12px;
+      border: 1px solid #fde68a;
+      background: #fffbeb;
+      color: var(--warn);
+      padding: 12px 14px;
+      border-radius: 14px;
+      line-height: 1.5;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .info-card {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px;
+      background: #fafcff;
+    }
+
+    .info-card h3 {
+      margin-bottom: 8px;
+      font-size: 1rem;
+    }
+
+    .info-card p, .info-card li {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .info-card ul {
+      margin: 8px 0 0 18px;
+      padding: 0;
+    }
+
+    .saved-box {
+      margin-top: 12px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .saved-item {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px;
+      background: #fafcff;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: start;
+      flex-wrap: wrap;
+    }
+
+    .small {
+      color: var(--muted);
+      font-size: .88rem;
+    }
+
+    .print-sheet {
+      background: var(--paper);
+      border: 1px solid var(--paper-line);
+      border-radius: 20px;
+      padding: 18px;
+    }
+
+    .doc-page {
+      background: #f4f4f2;
+      border: 1px solid var(--paper-line);
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 14px;
+    }
+
+    .doc-title {
+      font-weight: 800;
+      color: #24528f;
+      font-size: 1.15rem;
+      margin-bottom: 14px;
+      text-transform: uppercase;
+    }
+
+    .doc-section-title {
+      font-weight: 800;
+      color: #24528f;
+      margin: 16px 0 8px;
+      text-transform: uppercase;
+      font-size: .96rem;
+    }
+
+    .line-grid-2, .line-grid-3, .line-grid-4 {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .line-grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .line-grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .line-grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+    .line-field {
+      min-height: 54px;
+    }
+
+    .line-label {
+      font-size: .74rem;
+      font-weight: 800;
+      color: #334155;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+
+    .line-value {
+      min-height: 32px;
+      padding: 7px 9px;
+      border: 1px solid var(--paper-line);
+      background: var(--paper-fill);
+      border-radius: 4px;
+      font-size: .92rem;
+      white-space: pre-wrap;
+      line-height: 1.35;
+    }
+
+    .clause-box {
+      min-height: 66px;
+    }
+
+    .tick-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      margin: 8px 0 0;
+      color: #334155;
+      font-size: .92rem;
+    }
+
+    .tick {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tick-box {
+      width: 18px;
+      height: 18px;
+      border: 1px solid #475569;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .92rem;
+      font-weight: 800;
+      background: white;
+    }
+
+    .signature-area {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+      margin-top: 24px;
+    }
+
+    .signature-box {
+      padding-top: 30px;
+      border-top: 1px solid #475569;
+      font-size: .92rem;
+      color: #334155;
+    }
+
+    @media (max-width: 980px) {
+      .viewer-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .grid-2, .grid-3, .grid-4, .summary, .info-grid, .line-grid-2, .line-grid-3, .line-grid-4, .signature-area {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media print {
+      .tabs,
+      #tab-pdfs,
+      #tab-teoria,
+      #tab-formulario > .panel:first-child,
+      .summary,
+      .buttons,
+      .saved-section,
+      .lead,
+      .screen-only {
+        display: none !important;
+      }
+
+      body { background: white; }
+      .container { max-width: 100%; padding: 0; }
+      .panel {
+        box-shadow: none;
+        border: 0;
+        padding: 0;
+        margin: 0;
+      }
+      .tab-panel { display: block !important; }
+      .print-sheet {
+        border: 0;
+        border-radius: 0;
+        padding: 0;
+        background: white;
+      }
+      .doc-page {
+        border: 0;
+        border-radius: 0;
+        background: white;
+        padding: 0;
+        margin-bottom: 16px;
+      }
+      .line-value {
+        background: #f2f4f7 !important;
+        border: 1px solid #777 !important;
+      }
+    }
+  </style>
 </head>
-
 <body>
+  <div class="container">
+    <div class="tabs">
+      <button class="tab-btn" data-tab="pdfs">Modelos PDF</button>
+      <button class="tab-btn" data-tab="teoria">Teoría contratos</button>
+      <button class="tab-btn active" data-tab="formulario">Formulario y vista impresión</button>
+    </div>
 
-<div class="container">
+    <div class="tab-panel" id="tab-pdfs">
+      <div class="panel">
+        <h1>Modelos oficiales de contrato</h1>
+        <p class="lead">En esta pestaña puedes abrir los cuatro modelos PDF dentro de la propia página. Sirven como referencia visual para que el alumnado vea el documento real antes de rellenar el formulario.</p>
 
-<div class="tabs">
-<button class="tab-btn" data-tab="pdfs">PDF</button>
-<button class="tab-btn" data-tab="teoria">Teoría contratos</button>
-<button class="tab-btn active" data-tab="form">Formulario</button>
-</div>
+        <div class="viewer-layout">
+          <div class="viewer-menu">
+            <button class="doc-btn active" data-doc="indefinido">
+              Contrato indefinido
+              <div class="doc-meta">Modelo base con cláusulas generales y específicas</div>
+            </button>
+            <button class="doc-btn" data-doc="temporal">
+              Contrato temporal
+              <div class="doc-meta">Incluye producción y sustitución</div>
+            </button>
+            <button class="doc-btn" data-doc="alternancia">
+              Formación en alternancia
+              <div class="doc-meta">Trabajo y formación vinculada</div>
+            </button>
+            <button class="doc-btn" data-doc="practica">
+              Práctica profesional
+              <div class="doc-meta">Para obtener práctica profesional adecuada</div>
+            </button>
+          </div>
 
-<!-- PDF -->
-<div class="tab-panel" id="tab-pdfs">
-<div class="panel">
+          <div>
+            <div class="pdf-frame">
+              <iframe id="pdfViewer" src="" title="Visor de PDF" loading="lazy"></iframe>
+            </div>
+            <div class="note-box">
+              Esta pestaña muestra los modelos originales. La pestaña de formulario genera una versión rellenada e imprimible inspirada en estos modelos, con un apartado específico para cláusulas adicionales escrito por el alumnado.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-<button onclick="setPdf('indefinido')">Indefinido</button>
-<button onclick="setPdf('temporal')">Temporal</button>
-<button onclick="setPdf('alternancia')">Alternancia</button>
-<button onclick="setPdf('practica')">Práctica</button>
+    <div class="tab-panel" id="tab-teoria">
+      <div class="panel">
+        <h1>Teoría contratos</h1>
+        <p class="lead">Aquí se explican los cuatro modelos que se usan en la página y qué debe revisar el alumnado en cada uno antes de completar el formulario.</p>
 
-<iframe id="pdfViewer"></iframe>
+        <div class="info-grid">
+          <div class="info-card" style="background:#eef6ff; border-color:#cfe0ff;">
+            <h3>Contrato indefinido</h3>
+            <p>El modelo de contrato indefinido parte de datos de empresa, cuenta de cotización, centro de trabajo, persona trabajadora y asistencia legal, y después pasa a las cláusulas sobre puesto, grupo profesional, jornada, duración indefinida, salario, vacaciones y convenio. Además, incorpora páginas específicas para distintas situaciones concretas, como fijo-discontinuo o conversión de temporal en indefinido.</p>
+          </div>
 
-</div>
-</div>
+          <div class="info-card" style="background:#fff8eb; border-color:#f3d59b;">
+            <h3>Qué debe entender el alumno en el indefinido</h3>
+            <ul>
+              <li>Que no tiene fecha final ordinaria.</li>
+              <li>Que puede ser a tiempo completo, parcial o fijo-discontinuo.</li>
+              <li>Que las cláusulas adicionales cambian según la situación específica.</li>
+              <li>Que debe distinguir entre el modelo general y las páginas de especialidad.</li>
+            </ul>
+          </div>
 
-<!-- TEORIA -->
-<div class="tab-panel" id="tab-teoria">
-<div class="panel">
+          <div class="info-card" style="background:#eefcf3; border-color:#c8ebd4;">
+            <h3>Contrato temporal</h3>
+            <p>El modelo temporal recoge la misma identificación inicial, pero la parte clave es la causa temporal. En el documento aparecen de forma destacada las cláusulas específicas por circunstancias de la producción y por sustitución de persona trabajadora, además de otras situaciones especiales. Por tanto, el alumnado debe justificar muy bien el motivo de temporalidad.</p>
+          </div>
 
-<h2>Teoría contratos de trabajo</h2>
+          <div class="info-card" style="background:#fff1f3; border-color:#f2c2cb;">
+            <h3>Qué debe revisar el alumno en el temporal</h3>
+            <ul>
+              <li>Fecha de inicio y fecha de fin.</li>
+              <li>Causa concreta del contrato.</li>
+              <li>Si es por producción o por sustitución.</li>
+              <li>La conexión entre la causa y la duración.</li>
+              <li>Si existe derecho a indemnización al finalizar.</li>
+            </ul>
+          </div>
 
-<h3>¿Qué es un contrato de trabajo?</h3>
-<p>
-Es el acuerdo entre una empresa y un trabajador mediante el cual este se compromete a prestar servicios a cambio de un salario.
-</p>
+          <div class="info-card" style="background:#eef6ff; border-color:#cfe0ff;">
+            <h3>Contrato de formación en alternancia</h3>
+            <p>Este modelo combina actividad laboral retribuida con actividad formativa. Aparecen cláusulas sobre la actividad laboral, el tutor de la entidad formativa, el tutor de empresa, la formación vinculada, la jornada total, el tiempo de trabajo efectivo y el calendario formativo. Es un contrato especialmente útil para trabajar la idea de alternancia entre empleo y formación.</p>
+          </div>
 
-<h3>Elementos del contrato</h3>
-<ul>
-<li>Empresa</li>
-<li>Trabajador</li>
-<li>Actividad laboral</li>
-<li>Salario</li>
-<li>Duración</li>
-</ul>
+          <div class="info-card" style="background:#eefcf3; border-color:#c8ebd4;">
+            <h3>Puntos clave de la alternancia</h3>
+            <ul>
+              <li>Debe existir actividad formativa vinculada.</li>
+              <li>Hay que identificar tutor o tutora.</li>
+              <li>Hay que separar horas de trabajo efectivo y horas de formación.</li>
+              <li>Puede llevar plan formativo individual como anexo.</li>
+            </ul>
+          </div>
 
-<h3>Tipos de contrato</h3>
+          <div class="info-card" style="background:#fff8eb; border-color:#f3d59b;">
+            <h3>Contrato formativo para la obtención de la práctica profesional</h3>
+            <p>En este modelo se parte de que la persona trabajadora ya tiene la titulación o certificación adecuada. El contrato sirve para obtener práctica profesional acorde con esos estudios. Se recogen la titulación, la práctica profesional que se va a desarrollar, el grupo profesional, la jornada, la duración, el salario, el convenio y la referencia al plan formativo individual.</p>
+          </div>
 
-<h4>Indefinido</h4>
-<p>Sin fecha de finalización. Puede ser completo, parcial o fijo discontinuo.</p>
+          <div class="info-card" style="background:#fff1f3; border-color:#f2c2cb;">
+            <h3>Puntos clave de la práctica profesional</h3>
+            <ul>
+              <li>Debe existir una titulación previa relacionada.</li>
+              <li>La práctica debe ser adecuada al nivel de estudios.</li>
+              <li>Hay que indicar duración, salario y periodo de prueba.</li>
+              <li>Puede llevar plan formativo individual y tutoría.</li>
+            </ul>
+          </div>
 
-<h4>Temporal</h4>
-<p>Con duración determinada. Solo en casos justificados (producción o sustitución).</p>
+          <div class="info-card" style="grid-column: 1 / -1; background:#eef6ff; border-color:#cfe0ff;">
+            <h3>Campos comunes que se repiten en los cuatro modelos</h3>
+            <p>Los cuatro modelos repiten un bloque inicial de identificación: datos de la empresa, datos de la cuenta de cotización, datos del centro de trabajo, datos de la persona trabajadora y datos de la asistencia legal en su caso. Después aparecen las cláusulas principales del contrato y, según el modelo, apartados específicos de especialidad. Esto permite usar un formulario común y luego adaptar la vista imprimible según el tipo elegido.</p>
+          </div>
 
-<h4>Formación en alternancia</h4>
-<p>Combina formación y trabajo.</p>
+          <div class="info-card" style="grid-column: 1 / -1; background:#eefcf3; border-color:#c8ebd4;">
+            <h3>Cláusulas adicionales</h3>
+            <p>Las cláusulas adicionales son especialmente útiles en clase porque permiten adaptar el contrato a un supuesto concreto. Pueden servir para añadir distribución horaria detallada, referencias a un plan formativo, condiciones de tutoría, pactos de confidencialidad, uso de medios de la empresa, condiciones de trabajo a distancia, o cualquier indicación complementaria del ejercicio. En esta web se deja un cuadro amplio para que el alumnado redacte sus propias cláusulas y las vea en la versión de impresión.</p>
+          </div>
+        </div>
+      </div>
+    </div>
 
-<h4>Práctica profesional</h4>
-<p>Para titulados recientes.</p>
+    <div class="tab-panel active" id="tab-formulario">
+      <div class="panel">
+        <h1>Formulario y vista impresión</h1>
+        <p class="lead">Rellena los datos del contrato. La parte inferior genera una versión clara para imprimir basada en los modelos oficiales.</p>
 
-<h3>Cláusulas adicionales</h3>
-<p>Permiten adaptar el contrato a condiciones específicas:</p>
-<ul>
-<li>Horario especial</li>
-<li>Teletrabajo</li>
-<li>Complementos salariales</li>
-</ul>
+        <div class="subsection">
+          <h3>Tipo de contrato</h3>
+          <div class="grid-4">
+            <div class="field">
+              <label for="tipoContrato">Modelo</label>
+              <select id="tipoContrato">
+                <option value="indefinido">Contrato indefinido</option>
+                <option value="temporal">Contrato temporal</option>
+                <option value="alternancia">Contrato de formación en alternancia</option>
+                <option value="practica">Contrato formativo para la obtención de la práctica profesional</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="subtipo">Cláusula específica</label>
+              <select id="subtipo">
+                <option value="general">General / ordinario</option>
+                <option value="fijo_discontinuo">Fijo-discontinuo</option>
+                <option value="circ_produccion">Circunstancias de la producción</option>
+                <option value="sustitucion">Sustitución de persona trabajadora</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="jornada">Jornada</label>
+              <select id="jornada">
+                <option value="completa">A tiempo completo</option>
+                <option value="parcial">A tiempo parcial</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="trabajoDistancia">Trabajo a distancia</label>
+              <select id="trabajoDistancia">
+                <option value="no">No</option>
+                <option value="si">Sí</option>
+              </select>
+            </div>
+          </div>
+        </div>
 
-<h3>Importancia</h3>
-<p>
-Regula la relación laboral y define derechos y obligaciones.
-</p>
+        <div class="subsection">
+          <h3>Datos de la empresa</h3>
+          <div class="grid-4">
+            <div class="field"><label for="empresa">Nombre o razón social</label><input id="empresa" value="Empresa Ejemplo S.L."></div>
+            <div class="field"><label for="cif">CIF / NIF</label><input id="cif" value="B12345678"></div>
+            <div class="field"><label for="representante">D./Dña. representante</label><input id="representante" value="Laura Pérez Gómez"></div>
+            <div class="field"><label for="representanteNif">NIF representante</label><input id="representanteNif" value="12345678A"></div>
+            <div class="field"><label for="representanteCargo">En concepto de</label><input id="representanteCargo" value="Administradora"></div>
+            <div class="field"><label for="domicilioEmpresa">Domicilio social</label><input id="domicilioEmpresa" value="Calle Mayor 10"></div>
+            <div class="field"><label for="municipioEmpresa">Municipio</label><input id="municipioEmpresa" value="Madrid"></div>
+            <div class="field"><label for="cpEmpresa">Código postal / país</label><input id="cpEmpresa" value="28001 / España"></div>
+          </div>
+        </div>
 
-</div>
-</div>
+        <div class="subsection">
+          <h3>Cuenta de cotización y centro de trabajo</h3>
+          <div class="grid-4">
+            <div class="field"><label for="regimen">Régimen</label><input id="regimen" value="General"></div>
+            <div class="field"><label for="ccc">Código cuenta de cotización</label><input id="ccc" value="28/1234567890"></div>
+            <div class="field"><label for="actividadEconomica">Actividad económica</label><input id="actividadEconomica" value="Servicios administrativos"></div>
+            <div class="field"><label for="centroTrabajo">Centro de trabajo</label><input id="centroTrabajo" value="Calle Alcalá 25, Madrid"></div>
+          </div>
+        </div>
 
-<!-- FORMULARIO -->
-<div class="tab-panel active" id="tab-form">
-<div class="panel">
+        <div class="subsection">
+          <h3>Datos de la persona trabajadora</h3>
+          <div class="grid-4">
+            <div class="field"><label for="trabajador">Nombre y apellidos</label><input id="trabajador" value="María López García"></div>
+            <div class="field"><label for="trabajadorNif">NIF / NIE</label><input id="trabajadorNif" value="87654321B"></div>
+            <div class="field"><label for="fechaNacimiento">Fecha de nacimiento</label><input id="fechaNacimiento" type="date" value="2003-04-12"></div>
+            <div class="field"><label for="ss">Nº Seguridad Social</label><input id="ss" value="28/9988776655"></div>
+            <div class="field"><label for="nacionalidad">Nacionalidad</label><input id="nacionalidad" value="Española"></div>
+            <div class="field"><label for="nivelFormativo">Nivel formativo / titulación</label><input id="nivelFormativo" value="CFGM Gestión Administrativa"></div>
+            <div class="field"><label for="domicilioTrabajador">Municipio domicilio</label><input id="domicilioTrabajador" value="Getafe"></div>
+            <div class="field"><label for="paisDomicilio">Código postal / país domicilio</label><input id="paisDomicilio" value="28901 / España"></div>
+          </div>
+        </div>
 
-<h2>Formulario contrato</h2>
+        <div class="subsection">
+          <h3>Asistencia legal y datos básicos del puesto</h3>
+          <div class="grid-4">
+            <div class="field"><label for="asistenciaLegal">Asistencia legal (si existe)</label><input id="asistenciaLegal" value=""></div>
+            <div class="field"><label for="asistenciaNif">NIF asistencia legal</label><input id="asistenciaNif" value=""></div>
+            <div class="field"><label for="asistenciaCalidad">En calidad de</label><input id="asistenciaCalidad" value=""></div>
+            <div class="field"><label for="puesto">Puesto / profesión</label><input id="puesto" value="Auxiliar administrativa"></div>
+            <div class="field"><label for="grupoProfesional">Grupo profesional</label><input id="grupoProfesional" value="Grupo 7"></div>
+            <div class="field"><label for="funciones">Funciones</label><input id="funciones" value="Gestión documental, archivo y apoyo administrativo"></div>
+            <div class="field"><label for="fechaInicio">Fecha inicio</label><input id="fechaInicio" type="date" value="2026-05-01"></div>
+            <div class="field"><label for="fechaFin">Fecha fin</label><input id="fechaFin" type="date"></div>
+          </div>
+        </div>
 
-<label>Tipo contrato</label>
-<select id="tipoContrato">
-<option value="indefinido">Indefinido</option>
-<option value="temporal">Temporal</option>
-<option value="alternancia">Alternancia</option>
-<option value="practica">Práctica</option>
-</select>
+        <div class="subsection">
+          <h3>Jornada, horario y duración</h3>
+          <div class="grid-4">
+            <div class="field"><label for="horasSemana">Horas semanales</label><input id="horasSemana" value="40"></div>
+            <div class="field"><label for="horario">Horario</label><input id="horario" value="De 09:00 a 14:00 y de 15:00 a 18:00"></div>
+            <div class="field"><label for="distribucion">Distribución del tiempo de trabajo</label><input id="distribucion" value="Lunes a viernes"></div>
+            <div class="field"><label for="duracionTexto">Duración textual</label><input id="duracionTexto" value="Indefinida"></div>
+            <div class="field"><label for="periodoPrueba">Periodo de prueba</label><input id="periodoPrueba" value="2 meses"></div>
+            <div class="field"><label for="vacaciones">Vacaciones anuales</label><input id="vacaciones" value="30 días naturales"></div>
+            <div class="field"><label for="convenio">Convenio colectivo</label><input id="convenio" value="Convenio de oficinas y despachos"></div>
+            <div class="field"><label for="servicioEmpleo">Servicio Público de Empleo</label><input id="servicioEmpleo" value="Madrid"></div>
+          </div>
+        </div>
 
-<label>Empresa</label>
-<input id="empresa">
+        <div class="subsection">
+          <h3>Salario y cláusulas del contrato</h3>
+          <div class="grid-2">
+            <div class="field"><label for="salario">Retribución bruta</label><input id="salario" value="1.450 € mensuales"></div>
+            <div class="field"><label for="conceptosSalariales">Conceptos salariales</label><input id="conceptosSalariales" value="Salario base y plus convenio"></div>
+            <div class="field"><label for="causaTemporal">Causa temporal o causa específica</label><textarea id="causaTemporal">No consta / no aplica.</textarea></div>
+            <div class="field"><label for="formacionVinculada">Formación vinculada / plan formativo</label><textarea id="formacionVinculada">No consta / no aplica.</textarea></div>
+          </div>
+        </div>
 
-<label>CIF</label>
-<input id="cif">
+        <div class="subsection">
+          <h3>Cláusulas adicionales</h3>
+          <div class="field">
+            <label for="clausulasAdicionales">Espacio libre para redactar cláusulas adicionales</label>
+            <textarea id="clausulasAdicionales">1. La persona trabajadora desarrollará tareas de apoyo administrativo y archivo.
+2. La empresa facilitará los medios necesarios para el desempeño del puesto.
+3. En su caso, se seguirá el plan formativo individual acordado.</textarea>
+          </div>
+        </div>
 
-<label>Trabajador</label>
-<input id="trabajador">
+        <div class="buttons screen-only">
+          <button class="btn-primary" id="btnGenerar">Actualizar vista</button>
+          <button class="btn-secondary" id="btnEjemplo">Cargar ejemplo</button>
+          <button class="btn-outline" id="btnGuardar">Guardar ficha</button>
+          <button class="btn-outline" id="btnLimpiar">Limpiar</button>
+          <button class="btn-outline" id="btnPDF">Imprimir / PDF</button>
+        </div>
+      </div>
 
-<label>NIF</label>
-<input id="nif">
+      <div class="panel screen-only">
+        <div class="summary">
+          <div class="summary-card"><span>Modelo</span><strong id="resTipo">Contrato indefinido</strong></div>
+          <div class="summary-card"><span>Jornada</span><strong id="resJornada">A tiempo completo</strong></div>
+          <div class="summary-card"><span>Duración</span><strong id="resDuracion">Indefinida</strong></div>
+          <div class="summary-card"><span>Centro de trabajo</span><strong id="resCentro">Madrid</strong></div>
+        </div>
+      </div>
 
-<label>Puesto</label>
-<input id="puesto">
+      <div class="panel">
+        <h2 class="screen-only">Vista imprimible</h2>
+        <div class="print-sheet" id="printSheet">
+          <div class="doc-page">
+            <div class="doc-title" id="docMainTitle">Contrato de trabajo indefinido</div>
 
-<label>Salario</label>
-<input id="salario">
+            <div class="doc-section-title">Datos de la empresa</div>
+            <div class="line-grid-4">
+              <div class="line-field"><div class="line-label">CIF / NIF</div><div class="line-value" id="pvCif"></div></div>
+              <div class="line-field"><div class="line-label">D./Dña. representante</div><div class="line-value" id="pvRepresentante"></div></div>
+              <div class="line-field"><div class="line-label">NIF representante</div><div class="line-value" id="pvRepresentanteNif"></div></div>
+              <div class="line-field"><div class="line-label">En concepto de</div><div class="line-value" id="pvRepresentanteCargo"></div></div>
+            </div>
+            <div class="line-grid-2">
+              <div class="line-field"><div class="line-label">Nombre o razón social</div><div class="line-value" id="pvEmpresa"></div></div>
+              <div class="line-field"><div class="line-label">Domicilio social</div><div class="line-value" id="pvDomicilioEmpresa"></div></div>
+            </div>
+            <div class="line-grid-3">
+              <div class="line-field"><div class="line-label">Municipio</div><div class="line-value" id="pvMunicipioEmpresa"></div></div>
+              <div class="line-field"><div class="line-label">Código postal / país</div><div class="line-value" id="pvCpEmpresa"></div></div>
+              <div class="line-field"><div class="line-label">Actividad económica</div><div class="line-value" id="pvActividadEconomica"></div></div>
+            </div>
 
-<label>Cláusulas adicionales</label>
-<textarea id="clausulas"></textarea>
+            <div class="doc-section-title">Cuenta de cotización y centro de trabajo</div>
+            <div class="line-grid-4">
+              <div class="line-field"><div class="line-label">Régimen</div><div class="line-value" id="pvRegimen"></div></div>
+              <div class="line-field"><div class="line-label">Código cuenta de cotización</div><div class="line-value" id="pvCcc"></div></div>
+              <div class="line-field" style="grid-column: span 2;"><div class="line-label">Centro de trabajo</div><div class="line-value" id="pvCentroTrabajo"></div></div>
+            </div>
 
-<br>
+            <div class="doc-section-title">Datos de la persona trabajadora</div>
+            <div class="line-grid-4">
+              <div class="line-field"><div class="line-label">D./Dña.</div><div class="line-value" id="pvTrabajador"></div></div>
+              <div class="line-field"><div class="line-label">NIF / NIE</div><div class="line-value" id="pvTrabajadorNif"></div></div>
+              <div class="line-field"><div class="line-label">Fecha nacimiento</div><div class="line-value" id="pvFechaNacimiento"></div></div>
+              <div class="line-field"><div class="line-label">Nº Seguridad Social</div><div class="line-value" id="pvSs"></div></div>
+            </div>
+            <div class="line-grid-4">
+              <div class="line-field"><div class="line-label">Nacionalidad</div><div class="line-value" id="pvNacionalidad"></div></div>
+              <div class="line-field"><div class="line-label">Nivel formativo / titulación</div><div class="line-value" id="pvNivelFormativo"></div></div>
+              <div class="line-field"><div class="line-label">Municipio domicilio</div><div class="line-value" id="pvDomicilioTrabajador"></div></div>
+              <div class="line-field"><div class="line-label">Código postal / país domicilio</div><div class="line-value" id="pvPaisDomicilio"></div></div>
+            </div>
 
-<button onclick="generarPdf()">Generar PDF rellenado</button>
-<button onclick="verCampos()">Ver campos PDF</button>
+            <div class="doc-section-title">Datos de la asistencia legal (en su caso)</div>
+            <div class="line-grid-3">
+              <div class="line-field"><div class="line-label">D./Dña.</div><div class="line-value" id="pvAsistenciaLegal"></div></div>
+              <div class="line-field"><div class="line-label">NIF / NIE</div><div class="line-value" id="pvAsistenciaNif"></div></div>
+              <div class="line-field"><div class="line-label">En calidad de</div><div class="line-value" id="pvAsistenciaCalidad"></div></div>
+            </div>
+          </div>
 
-</div>
-</div>
+          <div class="doc-page">
+            <div class="doc-section-title">Cláusulas principales</div>
+            <div class="line-grid-2">
+              <div class="line-field"><div class="line-label">Puesto / profesión</div><div class="line-value" id="pvPuesto"></div></div>
+              <div class="line-field"><div class="line-label">Grupo profesional</div><div class="line-value" id="pvGrupoProfesional"></div></div>
+            </div>
+            <div class="line-grid-2">
+              <div class="line-field"><div class="line-label">Funciones</div><div class="line-value clause-box" id="pvFunciones"></div></div>
+              <div class="line-field"><div class="line-label">Causa específica / causa temporal</div><div class="line-value clause-box" id="pvCausaTemporal"></div></div>
+            </div>
 
-</div>
+            <div class="tick-row">
+              <div class="tick"><span class="tick-box" id="tickCompleta">□</span> Jornada completa</div>
+              <div class="tick"><span class="tick-box" id="tickParcial">□</span> Jornada parcial</div>
+              <div class="tick"><span class="tick-box" id="tickDistancia">□</span> Trabajo a distancia</div>
+            </div>
 
-<script>
+            <div class="line-grid-4" style="margin-top:10px;">
+              <div class="line-field"><div class="line-label">Horas semanales</div><div class="line-value" id="pvHorasSemana"></div></div>
+              <div class="line-field"><div class="line-label">Horario</div><div class="line-value" id="pvHorario"></div></div>
+              <div class="line-field"><div class="line-label">Distribución del tiempo</div><div class="line-value" id="pvDistribucion"></div></div>
+              <div class="line-field"><div class="line-label">Periodo de prueba</div><div class="line-value" id="pvPeriodoPrueba"></div></div>
+            </div>
 
-const pdfMap = {
-indefinido:"Contrato indefinido.pdf",
-temporal:"Contrato temporal.pdf",
-alternancia:"Contrato de trabajo de formación en alternancia.pdf",
-practica:"Contrato formativo para la obtención de la práctica profesional.pdf"
-};
+            <div class="line-grid-4">
+              <div class="line-field"><div class="line-label">Fecha inicio</div><div class="line-value" id="pvFechaInicio"></div></div>
+              <div class="line-field"><div class="line-label">Fecha fin</div><div class="line-value" id="pvFechaFin"></div></div>
+              <div class="line-field"><div class="line-label">Duración</div><div class="line-value" id="pvDuracionTexto"></div></div>
+              <div class="line-field"><div class="line-label">Vacaciones</div><div class="line-value" id="pvVacaciones"></div></div>
+            </div>
 
-function setPdf(tipo){
-document.getElementById("pdfViewer").src = pdfMap[tipo];
-}
+            <div class="line-grid-3">
+              <div class="line-field"><div class="line-label">Retribución bruta</div><div class="line-value" id="pvSalario"></div></div>
+              <div class="line-field"><div class="line-label">Conceptos salariales</div><div class="line-value" id="pvConceptosSalariales"></div></div>
+              <div class="line-field"><div class="line-label">Convenio colectivo</div><div class="line-value" id="pvConvenio"></div></div>
+            </div>
 
-function getData(){
-return {
-tipo: tipoContrato.value,
-empresa: empresa.value,
-cif: cif.value,
-trabajador: trabajador.value,
-nif: nif.value,
-puesto: puesto.value,
-salario: salario.value,
-clausulas: clausulas.value
-};
-}
+            <div class="line-grid-2">
+              <div class="line-field"><div class="line-label">Servicio Público de Empleo</div><div class="line-value" id="pvServicioEmpleo"></div></div>
+              <div class="line-field"><div class="line-label">Formación vinculada / plan formativo</div><div class="line-value clause-box" id="pvFormacionVinculada"></div></div>
+            </div>
 
-async function generarPdf(){
-const data = getData();
-const file = pdfMap[data.tipo];
+            <div class="doc-section-title">Cláusulas adicionales</div>
+            <div class="line-field">
+              <div class="line-label">Texto redactado por el alumnado</div>
+              <div class="line-value clause-box" style="min-height:150px;" id="pvClausulasAdicionales"></div>
+            </div>
 
-try {
-const bytes = await fetch(file).then(r=>{
-if(!r.ok) throw new Error("No se encuentra el PDF");
-return r.arrayBuffer();
-});
+            <div class="signature-area">
+              <div class="signature-box">Firma de la empresa</div>
+              <div class="signature-box">Firma de la persona trabajadora</div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-const pdfDoc = await PDFLib.PDFDocument.load(bytes);
-const form = pdfDoc.getForm();
-const fields = form.getFields();
+      <div class="panel saved-section screen-only">
+        <h2>Fichas guardadas</h2>
+        <p class="small">Se guardan en este navegador para que el alumnado pueda recuperar su trabajo.</p>
+        <div class="buttons" style="margin-top:0; margin-bottom:12px;">
+          <button class="btn-secondary" id="btnRefreshSaved">Actualizar lista</button>
+          <button class="btn-outline" id="btnDeleteAllSaved">Borrar todas</button>
+        </div>
+        <div class="saved-box" id="savedList">
+          <div class="small">No hay fichas guardadas todavía.</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-fields.forEach(f=>{
-const name = f.getName().toLowerCase();
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const STORAGE_KEY = 'contratos_pdf_guardados_v2';
 
-if(name.includes("empresa")) f.setText(data.empresa);
-if(name.includes("cif")) f.setText(data.cif);
-if(name.includes("trabajador")) f.setText(data.trabajador);
-if(name.includes("nif")) f.setText(data.nif);
-if(name.includes("puesto")) f.setText(data.puesto);
-if(name.includes("salario")) f.setText(data.salario);
-if(name.includes("clausula")) f.setText(data.clausulas);
-});
+    const contractLabels = {
+      indefinido: 'Contrato de trabajo indefinido',
+      temporal: 'Contrato de trabajo temporal',
+      alternancia: 'Contrato de trabajo de formación en alternancia',
+      practica: 'Contrato de trabajo formativo para la obtención de la práctica profesional'
+    };
 
-const pdfBytes = await pdfDoc.save();
-const blob = new Blob([pdfBytes],{type:"application/pdf"});
-const url = URL.createObjectURL(blob);
+    const subtypeLabels = {
+      general: 'General / ordinario',
+      fijo_discontinuo: 'Fijo-discontinuo',
+      circ_produccion: 'Circunstancias de la producción',
+      sustitucion: 'Sustitución de persona trabajadora'
+    };
 
-const a=document.createElement("a");
-a.href=url;
-a.download="contrato_rellenado.pdf";
-a.click();
+    const pdfMap = {
+      indefinido: 'Contrato%20indefinido.pdf#toolbar=1&navpanes=0&view=FitH',
+      temporal: 'Contrato%20temporal.pdf#toolbar=1&navpanes=0&view=FitH',
+      alternancia: 'Contrato%20de%20trabajo%20de%20formacio%CC%81n%20en%20alternancia.pdf#toolbar=1&navpanes=0&view=FitH',
+      practica: 'Contrato%20formativo%20para%20la%20obtencio%CC%81n%20de%20la%20pra%CC%81ctica%20profesional.pdf#toolbar=1&navpanes=0&view=FitH'
+    };
 
-} catch(e){
-alert("Error: "+e.message);
-}
-}
+    function readForm() {
+      return {
+        tipoContrato: $('tipoContrato').value,
+        subtipo: $('subtipo').value,
+        jornada: $('jornada').value,
+        trabajoDistancia: $('trabajoDistancia').value,
+        empresa: $('empresa').value.trim(),
+        cif: $('cif').value.trim(),
+        representante: $('representante').value.trim(),
+        representanteNif: $('representanteNif').value.trim(),
+        representanteCargo: $('representanteCargo').value.trim(),
+        domicilioEmpresa: $('domicilioEmpresa').value.trim(),
+        municipioEmpresa: $('municipioEmpresa').value.trim(),
+        cpEmpresa: $('cpEmpresa').value.trim(),
+        regimen: $('regimen').value.trim(),
+        ccc: $('ccc').value.trim(),
+        actividadEconomica: $('actividadEconomica').value.trim(),
+        centroTrabajo: $('centroTrabajo').value.trim(),
+        trabajador: $('trabajador').value.trim(),
+        trabajadorNif: $('trabajadorNif').value.trim(),
+        fechaNacimiento: $('fechaNacimiento').value,
+        ss: $('ss').value.trim(),
+        nacionalidad: $('nacionalidad').value.trim(),
+        nivelFormativo: $('nivelFormativo').value.trim(),
+        domicilioTrabajador: $('domicilioTrabajador').value.trim(),
+        paisDomicilio: $('paisDomicilio').value.trim(),
+        asistenciaLegal: $('asistenciaLegal').value.trim(),
+        asistenciaNif: $('asistenciaNif').value.trim(),
+        asistenciaCalidad: $('asistenciaCalidad').value.trim(),
+        puesto: $('puesto').value.trim(),
+        grupoProfesional: $('grupoProfesional').value.trim(),
+        funciones: $('funciones').value.trim(),
+        fechaInicio: $('fechaInicio').value,
+        fechaFin: $('fechaFin').value,
+        horasSemana: $('horasSemana').value.trim(),
+        horario: $('horario').value.trim(),
+        distribucion: $('distribucion').value.trim(),
+        duracionTexto: $('duracionTexto').value.trim(),
+        periodoPrueba: $('periodoPrueba').value.trim(),
+        vacaciones: $('vacaciones').value.trim(),
+        convenio: $('convenio').value.trim(),
+        servicioEmpleo: $('servicioEmpleo').value.trim(),
+        salario: $('salario').value.trim(),
+        conceptosSalariales: $('conceptosSalariales').value.trim(),
+        causaTemporal: $('causaTemporal').value.trim(),
+        formacionVinculada: $('formacionVinculada').value.trim(),
+        clausulasAdicionales: $('clausulasAdicionales').value.trim()
+      };
+    }
 
-async function verCampos(){
-const data = getData();
-const file = pdfMap[data.tipo];
+    function formatDate(value) {
+      if (!value) return 'No consta';
+      const [y, m, d] = value.split('-');
+      if (!y || !m || !d) return value;
+      return `${d}/${m}/${y}`;
+    }
 
-try {
-const bytes = await fetch(file).then(r=>r.arrayBuffer());
-const pdfDoc = await PDFLib.PDFDocument.load(bytes);
-const form = pdfDoc.getForm();
+    function safe(text) {
+      return text && String(text).trim() ? text : 'No consta';
+    }
 
-const names = form.getFields().map(f=>f.getName()).join("\n");
-alert(names);
+    function renderPreview() {
+      const data = readForm();
+      const tipo = contractLabels[data.tipoContrato] || data.tipoContrato;
+      const subtipo = subtypeLabels[data.subtipo] || data.subtipo;
+      const jornada = data.jornada === 'parcial' ? 'A tiempo parcial' : 'A tiempo completo';
 
-} catch(e){
-alert("Error leyendo campos");
-}
-}
+      $('resTipo').textContent = tipo;
+      $('resJornada').textContent = jornada;
+      $('resDuracion').textContent = safe(data.duracionTexto);
+      $('resCentro').textContent = safe(data.centroTrabajo);
+      $('docMainTitle').textContent = tipo.toUpperCase();
 
-document.querySelectorAll(".tab-btn").forEach(btn=>{
-btn.onclick=()=>{
-document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
-document.querySelectorAll(".tab-panel").forEach(p=>p.classList.remove("active"));
-btn.classList.add("active");
-document.getElementById("tab-"+btn.dataset.tab).classList.add("active");
-}
-});
+      const mapping = {
+        pvCif: data.cif,
+        pvRepresentante: data.representante,
+        pvRepresentanteNif: data.representanteNif,
+        pvRepresentanteCargo: data.representanteCargo,
+        pvEmpresa: data.empresa,
+        pvDomicilioEmpresa: data.domicilioEmpresa,
+        pvMunicipioEmpresa: data.municipioEmpresa,
+        pvCpEmpresa: data.cpEmpresa,
+        pvActividadEconomica: data.actividadEconomica,
+        pvRegimen: data.regimen,
+        pvCcc: data.ccc,
+        pvCentroTrabajo: data.centroTrabajo,
+        pvTrabajador: data.trabajador,
+        pvTrabajadorNif: data.trabajadorNif,
+        pvFechaNacimiento: formatDate(data.fechaNacimiento),
+        pvSs: data.ss,
+        pvNacionalidad: data.nacionalidad,
+        pvNivelFormativo: data.nivelFormativo,
+        pvDomicilioTrabajador: data.domicilioTrabajador,
+        pvPaisDomicilio: data.paisDomicilio,
+        pvAsistenciaLegal: data.asistenciaLegal,
+        pvAsistenciaNif: data.asistenciaNif,
+        pvAsistenciaCalidad: data.asistenciaCalidad,
+        pvPuesto: data.puesto,
+        pvGrupoProfesional: data.grupoProfesional,
+        pvFunciones: data.funciones,
+        pvCausaTemporal: `${subtipo}. ${safe(data.causaTemporal)}`,
+        pvHorasSemana: data.horasSemana,
+        pvHorario: data.horario,
+        pvDistribucion: data.distribucion,
+        pvPeriodoPrueba: data.periodoPrueba,
+        pvFechaInicio: formatDate(data.fechaInicio),
+        pvFechaFin: formatDate(data.fechaFin),
+        pvDuracionTexto: data.duracionTexto,
+        pvVacaciones: data.vacaciones,
+        pvSalario: data.salario,
+        pvConceptosSalariales: data.conceptosSalariales,
+        pvConvenio: data.convenio,
+        pvServicioEmpleo: data.servicioEmpleo,
+        pvFormacionVinculada: data.formacionVinculada,
+        pvClausulasAdicionales: data.clausulasAdicionales
+      };
 
-</script>
+      Object.entries(mapping).forEach(([id, value]) => {
+        const el = $(id);
+        if (el) el.textContent = safe(value);
+      });
 
+      $('tickCompleta').textContent = data.jornada === 'completa' ? '✓' : '□';
+      $('tickParcial').textContent = data.jornada === 'parcial' ? '✓' : '□';
+      $('tickDistancia').textContent = data.trabajoDistancia === 'si' ? '✓' : '□';
+
+      return data;
+    }
+
+    function setPdf(docKey) {
+      $('pdfViewer').src = pdfMap[docKey] || pdfMap.indefinido;
+      document.querySelectorAll('.doc-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.doc === docKey);
+      });
+    }
+
+    function loadExample() {
+      $('tipoContrato').value = 'alternancia';
+      $('subtipo').value = 'general';
+      $('jornada').value = 'completa';
+      $('trabajoDistancia').value = 'no';
+      $('empresa').value = 'Gestión Comercial Norte S.L.';
+      $('cif').value = 'B45678901';
+      $('representante').value = 'Ana Ruiz Martín';
+      $('representanteNif').value = '11223344Z';
+      $('representanteCargo').value = 'Administradora';
+      $('domicilioEmpresa').value = 'Avenida de Europa 14';
+      $('municipioEmpresa').value = 'Madrid';
+      $('cpEmpresa').value = '28023 / España';
+      $('regimen').value = 'General';
+      $('ccc').value = '28/1234567890';
+      $('actividadEconomica').value = 'Servicios de administración y gestión';
+      $('centroTrabajo').value = 'Calle Alcalá 25, Madrid';
+      $('trabajador').value = 'María López García';
+      $('trabajadorNif').value = '87654321B';
+      $('fechaNacimiento').value = '2003-04-12';
+      $('ss').value = '28/9988776655';
+      $('nacionalidad').value = 'Española';
+      $('nivelFormativo').value = 'CFGM Gestión Administrativa';
+      $('domicilioTrabajador').value = 'Getafe';
+      $('paisDomicilio').value = '28901 / España';
+      $('asistenciaLegal').value = '';
+      $('asistenciaNif').value = '';
+      $('asistenciaCalidad').value = '';
+      $('puesto').value = 'Auxiliar administrativa';
+      $('grupoProfesional').value = 'Grupo 7';
+      $('funciones').value = 'Gestión documental, archivo, atención administrativa y apoyo en tareas de oficina.';
+      $('fechaInicio').value = '2026-05-01';
+      $('fechaFin').value = '2027-05-01';
+      $('horasSemana').value = '40';
+      $('horario').value = 'De 09:00 a 14:00 y de 15:00 a 18:00';
+      $('distribucion').value = 'Lunes a viernes';
+      $('duracionTexto').value = '12 meses';
+      $('periodoPrueba').value = '1 mes';
+      $('vacaciones').value = '30 días naturales';
+      $('convenio').value = 'Convenio de oficinas y despachos';
+      $('servicioEmpleo').value = 'Madrid';
+      $('salario').value = '1.200 € mensuales';
+      $('conceptosSalariales').value = 'Salario base y plus convenio';
+      $('causaTemporal').value = 'No aplica. Contrato vinculado a proceso formativo en alternancia.';
+      $('formacionVinculada').value = 'Plan formativo individual de Gestión Administrativa con tutor de empresa y tutor de centro.';
+      $('clausulasAdicionales').value = '1. La persona trabajadora realizará funciones administrativas relacionadas con su itinerario formativo.\n2. La empresa permitirá la asistencia a la formación programada.\n3. El seguimiento se realizará mediante tutorías periódicas.';
+      renderPreview();
+      setPdf('alternancia');
+    }
+
+    function clearForm() {
+      ['empresa','cif','representante','representanteNif','representanteCargo','domicilioEmpresa','municipioEmpresa','cpEmpresa','regimen','ccc','actividadEconomica','centroTrabajo','trabajador','trabajadorNif','ss','nacionalidad','nivelFormativo','domicilioTrabajador','paisDomicilio','asistenciaLegal','asistenciaNif','asistenciaCalidad','puesto','grupoProfesional','funciones','horasSemana','horario','distribucion','duracionTexto','periodoPrueba','vacaciones','convenio','servicioEmpleo','salario','conceptosSalariales','causaTemporal','formacionVinculada','clausulasAdicionales'].forEach(id => $(id).value = '');
+      $('tipoContrato').value = 'indefinido';
+      $('subtipo').value = 'general';
+      $('jornada').value = 'completa';
+      $('trabajoDistancia').value = 'no';
+      $('fechaInicio').value = '';
+      $('fechaFin').value = '';
+      $('fechaNacimiento').value = '';
+      renderPreview();
+    }
+
+    function getSaved() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveCurrent() {
+      const data = renderPreview();
+      const list = getSaved();
+      list.unshift({
+        id: Date.now(),
+        createdAt: new Date().toLocaleString('es-ES'),
+        empresa: data.empresa,
+        trabajador: data.trabajador,
+        tipo: contractLabels[data.tipoContrato] || data.tipoContrato,
+        data
+      });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(list.slice(0, 20)));
+      renderSaved();
+      alert('Ficha guardada en este navegador.');
+    }
+
+    function loadSaved(id) {
+      const found = getSaved().find(item => item.id === id);
+      if (!found) return;
+      Object.entries(found.data).forEach(([key, value]) => {
+        const el = $(key);
+        if (el) el.value = value;
+      });
+      renderPreview();
+      setPdf(found.data.tipoContrato || 'indefinido');
+    }
+
+    function deleteSaved(id) {
+      const filtered = getSaved().filter(item => item.id !== id);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
+      renderSaved();
+    }
+
+    function deleteAllSaved() {
+      localStorage.removeItem(STORAGE_KEY);
+      renderSaved();
+    }
+
+    function escapeHtml(text) {
+      return String(text)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    function renderSaved() {
+      const list = getSaved();
+      const box = $('savedList');
+      if (!list.length) {
+        box.innerHTML = '<div class="small">No hay fichas guardadas todavía.</div>';
+        return;
+      }
+      box.innerHTML = list.map(item => `
+        <div class="saved-item">
+          <div>
+            <strong>${escapeHtml(item.trabajador || 'Sin nombre')}</strong><br>
+            <span class="small">${escapeHtml(item.empresa || 'Sin empresa')} · ${escapeHtml(item.tipo)} · Guardada el ${escapeHtml(item.createdAt)}</span>
+          </div>
+          <div class="buttons" style="margin-top:0;">
+            <button class="btn-outline" onclick="loadSaved(${item.id})">Cargar</button>
+            <button class="btn-outline" onclick="deleteSaved(${item.id})">Borrar</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    $('btnGenerar').addEventListener('click', renderPreview);
+    $('btnEjemplo').addEventListener('click', loadExample);
+    $('btnGuardar').addEventListener('click', saveCurrent);
+    $('btnLimpiar').addEventListener('click', clearForm);
+    $('btnPDF').addEventListener('click', () => window.print());
+    $('btnRefreshSaved').addEventListener('click', renderSaved);
+    $('btnDeleteAllSaved').addEventListener('click', deleteAllSaved);
+
+    document.querySelectorAll('input, select, textarea').forEach(el => {
+      el.addEventListener('input', renderPreview);
+      el.addEventListener('change', () => {
+        renderPreview();
+        if (el.id === 'tipoContrato') {
+          document.querySelectorAll('.doc-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.doc === el.value);
+          });
+        }
+      });
+    });
+
+    document.querySelectorAll('.doc-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        setPdf(btn.dataset.doc);
+      });
+    });
+
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(`tab-${btn.dataset.tab}`).classList.add('active');
+
+        if (btn.dataset.tab === 'pdfs' && !$('pdfViewer').src) {
+          setPdf('indefinido');
+        }
+      });
+    });
+
+    window.loadSaved = loadSaved;
+    window.deleteSaved = deleteSaved;
+
+    renderPreview();
+    renderSaved();
+  </script>
 </body>
 </html>
+
